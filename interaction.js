@@ -2,44 +2,50 @@
 // L'interacteur viendra dans un second temps donc ne vous en souciez pas au départ.
 function DnD(canvas, interactor) {
     // Définir ici les attributs de la 'classe'
-    this.initX = 0;
-    this.initY = 0;
+    this.startX = 0;
+    this.startY = 0;
     this.endX = 0;
     this.endY = 0;
-    this.pressed = false;
+    var pressed = false;
 
     // Developper les 3 fonctions gérant les événements
     // Pression
     this.down = function (evt) {
-        this.pressed = true;
-        this.initX = getMousePosition(canvas, evt).x;
-        this.initY = getMousePosition(canvas, evt).y;
-        console.log("Mouse down, initial position : [" + this.initX + "," + this.initY + "]");
+        pressed = true;
+        var coord = getMousePosition(canvas, evt);
+        this.startX = coord.x;
+        this.startY = coord.y;
+        console.log("Mouse down, initial position : [" + this.startX + "," + this.startY + "]");
+        interactor.onInteractionStart(this);
     }.bind(this);
 
     // Mouvement
     this.move = function (evt) {
-        if (this.pressed) {
-            this.endX = getMousePosition(canvas, evt).x;
-            this.endY = getMousePosition(canvas, evt).y;
+        if (pressed) {
+            var coord = getMousePosition(canvas, evt);
+            this.endX = coord.x;
+            this.endY = coord.y;
             console.log("Moving mouse, position : [" + this.endX + "," + this.endY + "]");
+            interactor.onInteractionUpdate(this);
         }
     }.bind(this);
 
     // Relâchement
     this.up = function (evt) {
-        if (this.pressed) {
-            this.endX = getMousePosition(canvas, evt).x;
-            this.endY = getMousePosition(canvas, evt).y;
-            this.pressed = false;
+        if (pressed) {
+            var coord = getMousePosition(canvas, evt);
+            this.endX = coord.x;
+            this.endY = coord.y;
+            interactor.onInteractionEnd(this);
+            pressed = false;
             console.log("Mouse up, end position : [" + this.endX + "," + this.endY + "]");
         }
     }.bind(this);
 
     // Associer les fonctions précédentes aux évènements du canvas.
-    canvas.addEventListener('down', this.up);
-    canvas.addEventListener('move', this.move);
-    canvas.addEventListener('up', this.up);
+    canvas.addEventListener('mousedown', this.down, false);
+    canvas.addEventListener('mousemove', this.move, false);
+    canvas.addEventListener('mouseup', this.up, false);
 };
 
 
