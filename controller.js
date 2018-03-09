@@ -1,4 +1,4 @@
-var editingMode = {rect: 0, line: 1};
+var editingMode = {rect: 0, line: 1, circle: 3};
 
 function Pencil(ctx, drawing, canvas) {
     this.currEditingMode = editingMode.line;
@@ -14,6 +14,8 @@ function Pencil(ctx, drawing, canvas) {
             this.currEditingMode = editingMode.rect;
         } else if (document.getElementById('butLine').checked) {
             this.currEditingMode = editingMode.line;
+        } else if (document.getElementById('butCircle').checked) {
+            this.currEditingMode = editingMode.circle;
         }
         this.currLineWidth = document.getElementById('spinnerWidth').value;
         this.currColour = document.getElementById('colour').value;
@@ -22,10 +24,16 @@ function Pencil(ctx, drawing, canvas) {
     // Implémentez ici les 3 fonctions onInteractionStart, onInteractionUpdate et onInteractionEnd
     this.onInteractionStart = function () {
         this.setDrawingAttr();
-        if (this.currEditingMode == editingMode.rect) {
-            this.currentShape = new Rectangle(this.dnd.startX, this.dnd.startY, 0, 0, this.currLineWidth, this.currColour);
-        } else if (this.currEditingMode == editingMode.line) {
-            this.currentShape = new Line(this.dnd.startX, this.dnd.startY, this.dnd.startX, this.dnd.startY, this.currLineWidth, this.currColour);
+        switch (this.currEditingMode) {
+            case editingMode.rect:
+                this.currentShape = new Rectangle(this.dnd.startX, this.dnd.startY, 0, 0, this.currLineWidth, this.currColour);
+                break;
+            case editingMode.line:
+                this.currentShape = new Line(this.dnd.startX, this.dnd.startY, this.dnd.startX, this.dnd.startY, this.currLineWidth, this.currColour);
+                break;
+            case editingMode.circle:
+                this.currentShape = new Circle(this.dnd.startX, this.dnd.startY, 0, 0, this.currLineWidth, this.currColour)
+                break;
         }
     }.bind(this);
 
@@ -46,12 +54,21 @@ function Pencil(ctx, drawing, canvas) {
     }.bind(this);
 
     this.createShape = function () {
-        if (this.currEditingMode == editingMode.rect) {
-            var height = this.dnd.endY - this.dnd.startY;
-            var width = this.dnd.endX - this.dnd.startX;
-            this.currentShape = new Rectangle(this.dnd.startX, this.dnd.startY, height, width, this.currLineWidth, this.currColour);
-        } else if (this.currEditingMode == editingMode.line) {
-            this.currentShape = new Line(this.dnd.startX, this.dnd.startY, this.dnd.endX, this.dnd.endY, this.currLineWidth, this.currColour);
+        switch (this.currEditingMode) {
+            case editingMode.rect:
+                var height = this.dnd.endY - this.dnd.startY;
+                var width = this.dnd.endX - this.dnd.startX;
+                this.currentShape = new Rectangle(this.dnd.startX, this.dnd.startY, height, width, this.currLineWidth, this.currColour);
+                break;
+            case editingMode.line:
+                this.currentShape = new Line(this.dnd.startX, this.dnd.startY, this.dnd.endX, this.dnd.endY, this.currLineWidth, this.currColour);
+                break;
+            case editingMode.circle:
+                var x = this.dnd.endX - this.dnd.startX;
+                var y = this.dnd.endY - this.dnd.startY;
+                var radius = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2))
+                this.currentShape = new Circle(this.dnd.startX, this.dnd.startY, radius, this.currLineWidth, this.currColour)
+                break;
         }
     }
 };

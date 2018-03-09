@@ -43,4 +43,12 @@ function Line(x1, y1, x2, y2, thickness, color) {
     this.y2 = y2;
 }
 
+// Circle extends Shape
+function Circle(x1, y1, radius, thickness, color) {
+    Shape.call(this, thickness, color);
+    this.x1 = x1;
+    this.y1 = y1;
+    this.rad = radius;
+}
+
 Line.prototype = new Shape();

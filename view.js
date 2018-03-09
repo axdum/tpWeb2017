@@ -39,6 +39,8 @@ Drawing.prototype.updateShapeList = function () {
         li.appendChild(document.createTextNode(' Rectangle ( [' + (shape.x1 | 0) + ';' + (shape.y1 | 0) + '], w: ' + shape.width + ', h: ' + shape.height + ' )'));
     } else if (shape instanceof Line) {
         li.appendChild(document.createTextNode(' Line ( [' + (shape.x1 | 0) + ';' + (shape.y1 | 0) + '] to [' + (shape.y2 | 0) + ';' + (shape.y2 | 0) + '] )'));
+    } else if (shape instanceof Circle) {
+        li.appendChild(document.createTextNode(' Circle ( center:  [' + shape.x1 + ';' + shape.y1 + '], radius: ' + shape.rad + ' )'));
     }
     shapeList.appendChild(li);
 };
@@ -71,6 +73,13 @@ Line.prototype.paint = function (ctx) {
     ctx.beginPath();
     ctx.moveTo(this.x1, this.y1);
     ctx.lineTo(this.x2, this.y2);
+    ctx.stroke();
+};
+
+Circle.prototype.paint = function (ctx) {
+    Shape.prototype.paint.call(this, ctx);
+    ctx.beginPath();
+    ctx.arc(this.x1, this.y1, this.rad, 0, 2 * Math.PI);
     ctx.stroke();
 };
 
