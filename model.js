@@ -11,8 +11,9 @@ function Drawing() {
     }.bind(this);
 
     // Retirer une forme du tableau à partir de l'index i
-    this.removeShape = function (i) {
-        this.shapes.splice(i, 1);
+    this.removeShape = function (index) {
+        this.shapes.splice(index, 1);
+        console.log(this.shapes);
     }.bind(this);
 }
 

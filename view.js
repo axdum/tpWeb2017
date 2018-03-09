@@ -10,6 +10,48 @@ Drawing.prototype.paint = function (ctx) {
     });
 };
 
+Drawing.prototype.updateShapeList = function () {
+    // DOM elems
+    var shapeList = document.getElementById('shapeList');
+    var li = document.createElement('li');
+    var btn = document.createElement('button');
+    var span = document.createElement('span');
+
+    // Style
+    li.className = 'list-group-item';
+    btn.className = 'btn btn-default';
+    span.className = 'glyphicon glyphicon-remove-sign';
+
+    // Ids
+    var nbShapes = this.shapes.length - 1;
+    li.id = 'shape' + nbShapes;
+    btn.id = "btnRemove" + nbShapes;
+
+    // onClick
+    btn.setAttribute('onClick', 'drawing.deleteShape(' + nbShapes + ')');
+
+    // Construction de la liste
+    btn.appendChild(span);
+    li.appendChild(btn);
+
+    var shape = this.shapes[nbShapes];
+    if (shape instanceof Rectangle) {
+        li.appendChild(document.createTextNode(' Rectangle ( [' + (shape.x1 | 0) + ';' + (shape.y1 | 0) + '], w: ' + shape.width + ', h: ' + shape.height + ' )'));
+    } else if (shape instanceof Line) {
+        li.appendChild(document.createTextNode(' Line ( [' + (shape.x1 | 0) + ';' + (shape.y1 | 0) + '] to [' + (shape.y2 | 0) + ';' + (shape.y2 | 0) + '] )'));
+    }
+    shapeList.appendChild(li);
+};
+
+Drawing.prototype.deleteShape = function (nbShape) {
+    var li = document.getElementById('shape' + nbShape);
+    var i = $(li).index();
+    li.remove();
+    this.removeShape(i);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    this.paint(ctx, canvas);
+};
+
 Shape.prototype.paint = function (ctx) {
     ctx.beginPath();
     ctx.lineWidth = this.thickness;
@@ -31,3 +73,5 @@ Line.prototype.paint = function (ctx) {
     ctx.lineTo(this.x2, this.y2);
     ctx.stroke();
 };
+
+

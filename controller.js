@@ -42,6 +42,7 @@ function Pencil(ctx, drawing, canvas) {
         drawing.addShape(this.currentShape);
         drawing.paint(ctx, canvas);
         this.currentShape = 0;
+        drawing.updateShapeList();
     }.bind(this);
 
     this.createShape = function () {
