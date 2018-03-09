@@ -54,6 +54,14 @@ Drawing.prototype.deleteShape = function (nbShape) {
     this.paint(ctx, canvas);
 };
 
+Drawing.prototype.redoShape = function () {
+    if (this.oldshapes.length > 0) {
+        this.redo();
+        this.updateShapeList();
+        this.paint(ctx, canvas);
+    }
+};
+
 Shape.prototype.paint = function (ctx) {
     ctx.beginPath();
     ctx.lineWidth = this.thickness;

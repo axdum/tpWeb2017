@@ -4,6 +4,7 @@
 // Drawing
 function Drawing() {
     this.shapes = [];
+    this.oldshapes = [];
 
     // Ajouter une forme au tableau
     this.addShape = function (shape) {
@@ -12,8 +13,24 @@ function Drawing() {
 
     // Retirer une forme du tableau à partir de l'index i
     this.removeShape = function (index) {
+        var shape = this.shapes[index];
         this.shapes.splice(index, 1);
+        this.oldshapes.push(shape);
         console.log(this.shapes);
+        console.log(this.oldshapes);
+    }.bind(this);
+
+    // Retirer une forme du tableau à partir de l'index i
+    this.removeOldShape = function (index) {
+        this.oldshapes.splice(index, 1);
+        console.log(this.shapes);
+    }.bind(this);
+
+    this.redo = function () {
+        this.shapes.push(this.oldshapes[this.oldshapes.length-1]);
+        this.oldshapes.splice(this.oldshapes.length-1,1)
+        console.log(this.shapes);
+        console.log(this.oldshapes);
     }.bind(this);
 }
 

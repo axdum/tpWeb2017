@@ -31,7 +31,7 @@
 
 form {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    margin: 80px;
+    margin: 20px;
 }
 
 .mx-button label {
@@ -105,5 +105,13 @@ form {
   -webkit-border-bottom-right-radius: 4px;
   -moz-border-radius-bottomright: 4px;
   border-bottom-right-radius: 4px;
+}
+
+#redoLabel{
+    margin-right: 10px;
+}
+
+#spinnerWidth{
+    margin-left: 10px;
 }
 
