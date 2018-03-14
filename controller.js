@@ -8,7 +8,10 @@ function Pencil(ctx, drawing, canvas) {
     this.dnd = new DnD(canvas, this);
 
     // Liez ici les widgets à la classe pour modifier les attributs présents ci-dessus.
-    // Récupère les attributs saisis par l'user.
+
+    /**
+     * Récupère les attributs saisis par l'user.
+     */
     this.setDrawingAttr = function () {
         if (document.getElementById('butRect').checked) {
             this.currEditingMode = editingMode.rect;
@@ -22,6 +25,11 @@ function Pencil(ctx, drawing, canvas) {
     }
 
     // Implémentez ici les 3 fonctions onInteractionStart, onInteractionUpdate et onInteractionEnd
+
+    /**
+     * Instancier une forme lors d'un clic dans la zone de dessin.
+     * @type {any}
+     */
     this.onInteractionStart = function () {
         this.setDrawingAttr();
         switch (this.currEditingMode) {
@@ -37,6 +45,10 @@ function Pencil(ctx, drawing, canvas) {
         }
     }.bind(this);
 
+    /**
+     * Mettre à jour la forme lors d'un Drag.
+     * @type {any}
+     */
     this.onInteractionUpdate = function () {
         this.createShape();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -44,6 +56,10 @@ function Pencil(ctx, drawing, canvas) {
         this.currentShape.paint(ctx, canvas);
     }.bind(this);
 
+    /**
+     * Mettre à jour la forme lorsque l'on relache le clic.
+     * @type {any}
+     */
     this.onInteractionEnd = function () {
         this.createShape();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -53,6 +69,9 @@ function Pencil(ctx, drawing, canvas) {
         drawing.updateShapeList();
     }.bind(this);
 
+    /**
+     * Créer la forme correspondante au mode d'édition.
+     */
     this.createShape = function () {
         switch (this.currEditingMode) {
             case editingMode.rect:

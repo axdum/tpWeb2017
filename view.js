@@ -1,5 +1,9 @@
 // Implémenter ici les fonctions paint à ajouter dans chacune des classes du modèle.
 
+/**
+ * Dessiner les formes contenues dans le tableau des formes visibles.
+ * @param ctx le contexte.
+ */
 Drawing.prototype.paint = function (ctx) {
     console.log(this.shapes);
     ctx.fillStyle = '#F0F0F0'; // set canvas' background color
@@ -10,6 +14,9 @@ Drawing.prototype.paint = function (ctx) {
     });
 };
 
+/**
+ * Mettre à jour la liste des formes.
+ */
 Drawing.prototype.updateShapeList = function () {
     // DOM elems
     var shapeList = document.getElementById('shapeList');
@@ -45,6 +52,10 @@ Drawing.prototype.updateShapeList = function () {
     shapeList.appendChild(li);
 };
 
+/**
+ * Supprimer une forme.
+ * @param nbShape index des la forme à supprimer.
+ */
 Drawing.prototype.deleteShape = function (nbShape) {
     var li = document.getElementById('shape' + nbShape);
     var i = $(li).index();
@@ -54,6 +65,9 @@ Drawing.prototype.deleteShape = function (nbShape) {
     this.paint(ctx, canvas);
 };
 
+/**
+ * Redessiner la dernière forme supprimée
+ */
 Drawing.prototype.redoShape = function () {
     if (this.oldshapes.length > 0) {
         this.redo();
@@ -62,13 +76,20 @@ Drawing.prototype.redoShape = function () {
     }
 };
 
+/**
+ * Dessiner une forme.
+ * @param ctx le contexte
+ */
 Shape.prototype.paint = function (ctx) {
     ctx.beginPath();
     ctx.lineWidth = this.thickness;
     ctx.strokeStyle = this.color;
 };
 
-
+/**
+ * Dessiner un rectangle.
+ * @param ctx le contexte
+ */
 Rectangle.prototype.paint = function (ctx) {
     Shape.prototype.paint.call(this, ctx);
     //ctx.beginPath();
@@ -76,6 +97,10 @@ Rectangle.prototype.paint = function (ctx) {
     ctx.stroke();
 };
 
+/**
+ * Dessiner une ligne.
+ * @param ctx le contexte
+ */
 Line.prototype.paint = function (ctx) {
     Shape.prototype.paint.call(this, ctx);
     ctx.beginPath();
@@ -84,6 +109,10 @@ Line.prototype.paint = function (ctx) {
     ctx.stroke();
 };
 
+/**
+ * Dessiner un cercle.
+ * @param ctx le contexte
+ */
 Circle.prototype.paint = function (ctx) {
     Shape.prototype.paint.call(this, ctx);
     ctx.beginPath();
